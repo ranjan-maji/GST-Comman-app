@@ -8,7 +8,7 @@ const {
 const router = require('express').Router();
  
 //CREATE 
-router.post('/', verifyTokenAndAdmin, async (req, res) => {
+router.post('/register', async (req, res) => { //verifyTokenAndAdmin
     const newProduct = new Product(req.body)
 
     try {
