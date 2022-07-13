@@ -27,7 +27,7 @@ app.use('/api/products', productRoute);
 app.use('/api/carts', cartRoute);
 app.use('/api/orders', orderRoute);
 app.use('/api/checkout', stripeRoute);
-app.use('api/send', otpRoute);
+app.use('/api/mail', otpRoute);
 
 app.listen(process.env.PORT || 8000, () => {
     console.log("Server Is Running");

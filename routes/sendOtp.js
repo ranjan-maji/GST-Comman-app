@@ -1,57 +1,88 @@
-const MailOTp = require('../models/sendoTP');
-const nodemailer = require('nodemailer');
-
 const router = require('express').Router();
+const sendotp = require('../middleware/sendotp');
+const generate = require('../middleware/generate');
+const otp = require('../controllers/otp');
 
 
-
-var email;
-
-const otp = Math.floor(100000 + Math.random() * 900000);
-
-console.log(otp);
-
-let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    service: 'Gmail',
-
-    auth: {
-        user: 'ranjanmaji96@gmail.com',
-        pass: 'xkqpknwkgmcpvcts',
-    }
-
-
-
-
+router.post('/send',(req,res) => {
+    const x=generate.generateOtp();
+    const mailOptions={
+        from: 'ranjanmai96@gmail.com',
+        to: req.body.email,
+        subject: 'Email Verification',
+        html: 'Your OTP for Email Verification is <b>'+x+'</b>'
+    };
+    sendotp.send(mailOptions,(err)=>{
+        if(err)
+            res.send(err);
+        else
+        {
+            otp.save(req.body.email,x,(error)=>{
+                if(error)
+                    
+                res.send('verifyOtp',{email:req.body.email});
+            });
+        }
+    });
+});
+router.post('/api/send',(req,res)=>{
+    const x=generate.generateOtp();
+    const mailOptions={
+        from: 'ranjanmai96@gmail.com',
+        to: req.body.email,
+        subject: 'Email Verification',
+        html: 'Your OTP for Email Verification is <b>'+x+'</b>'
+    };
+    sendotp.send(mailOptions,(err)=>{
+        if(err)
+            res.send(err);
+        otp.save(req.body.email,x,(error)=>{
+            if(error)
+                res.send(error);
+            res.end();
+        });
+    });
 });
 
-router.get('/hi', function (req, res) {
-    res.send('Hello, Ranjan')
-})
 
 
-
-router.post('/otps', function (req, res) {
-    email = req.body.email;
-
-    // send mail with defined transport object
-    var mailOptions = {
-        to: req.body.email,
-        subject: "Otp for registration is: ",
-        html: "<h3>OTP for account verification is </h3>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>" // html body
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            return console.log(error);
+router.post('/verify',(req,res)=>{
+    otp.match(req.body.email,req.body.otp,(err,data)=>{
+        if(err)
+            res.send(err);
+        if(data==undefined)
+            res.send("OTP Expired. Kindly try to resend it.");
+        else if(data==true)
+        {
+            otp.remove(req.body.email,(error,)=>{
+                if(error)
+                    res.send(error);
+                else
+                    res.send("Success. Verified.");
+            })
         }
-        console.log('Message sent: %s', info.messageId);
-        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+        else
+            res.send("Failure. Kindly check again.");
+    })
+});
 
-        res.send('otp');
-    });
+
+router.post('/api/verify',(req,res)=>{
+    otp.match(req.body.email,req.body.otp,(err,data)=>{
+        if(err)
+            res.send(err);
+        if(data==undefined||data==false)
+            res.send("Failure");
+        else if(data==true)
+        {
+            otp.remove(req.body.email,(error)=>{
+                if(error)
+                    res.send(error);
+                else
+                    res.send("Success");
+            })
+        }
+    })
 });
 
 
