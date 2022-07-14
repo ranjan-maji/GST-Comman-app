@@ -1,4 +1,5 @@
 const otp = require('../models/sendoTP');
+const User = require('../models/User');
 const bcrypt = require('../middleware/bcrypt');
 
 

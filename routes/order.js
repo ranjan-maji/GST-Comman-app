@@ -7,8 +7,8 @@ const {
 
 const router = require('express').Router();
  
-//CREATE 
-router.post('/register', async (req, res) => { //verifyToken
+//CREATE !
+router.post('/', verifyToken, async (req, res) => { //verifyToken
     const newOrder = new Order(req.body)
 
     try {
@@ -40,7 +40,7 @@ router.put('/:id', verifyTokenAndAdmin, async (req, res) => {
 
 //DELETE
 
-router.delete('/id', async (req, res) => {  //verifyTokenAndAdmin,
+router.delete('/:id', async (req, res) => {  //verifyTokenAndAdmin,
     try {
         await Order.findByIdAndDelete(req.params.id)
         req.status(200).json('Order has been deleted.....')
@@ -52,7 +52,7 @@ router.delete('/id', async (req, res) => {  //verifyTokenAndAdmin,
 // //GET USER ORDERS  
 router.get('/find/:userId', async (req, res) => {  //verifyTokenAndAuthorization
     try {
-        const orders = await Order.find({ userID: req.params.id });
+        const orders = await Order.find({ userId: req.params.id });
         res.status(200).json(orders);
     } catch (err) {
         res.status(500).json(err);
@@ -70,7 +70,7 @@ router.get('/ord', verifyTokenAndAdmin, async (req, res) => {
 });
 
 //GET MONTHLY INCOME
-router.get('/income', async (req, res) => {//verifyTokenAndAdmin,
+router.get('/income', verifyTokenAndAdmin, async (req, res) => {//verifyTokenAndAdmin,
     const date = new Date();
     const lastMonth = new Date(date.setMonth(date.getMonth()-1))
     const previousMonth = new Date(new Date().setMonth(lastMonth.getMonth() - 1));

@@ -6,6 +6,18 @@ const {
  } = require('./verifyToken');
 
 const router = require('express').Router();
+
+//CREATE by admin with Bearer auth key
+router.post('/admin', verifyTokenAndAdmin, async (req, res) => { 
+    const newProduct = new Product(req.body)
+
+    try {
+        const savedProduct = await newProduct.save();
+        res.status(200).json(savedProduct);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+})
  
 //CREATE 
 router.post('/register', async (req, res) => { //verifyTokenAndAdmin
@@ -20,7 +32,7 @@ router.post('/register', async (req, res) => { //verifyTokenAndAdmin
 })
 
 //UPDATE
-router.put('/:id', verifyTokenAndAdmin, async (req, res) => {
+router.put('/:id', async (req, res) => { //verifyTokenAndAdmin,
    try {
     const updateProduct = await Product.findByIdAndUpdate(
         req.params.id,
@@ -40,7 +52,7 @@ router.put('/:id', verifyTokenAndAdmin, async (req, res) => {
 
 //DELETE
 
-router.delete('/id', verifyTokenAndAdmin, async (req, res) => {
+router.delete('/:id',  async (req, res) => { //verifyTokenAndAdmin
     try {
         await Product.findByIdAndDelete(req.params.id)
         req.status(200).json('Product has been deleted.....')
@@ -49,7 +61,7 @@ router.delete('/id', verifyTokenAndAdmin, async (req, res) => {
     }
 })
 
-// //GET PRODUCT BY ADMIN
+// //GET PRODUCT BY by ID
 router.get('/find/:id', async (req, res) => {
     try {
         const product = await Product.findById(req.params.id)
