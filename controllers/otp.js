@@ -49,12 +49,12 @@ exports.match = (email,code,cb)=>
 	});
 }
 
-// exports.remove = (email,cb)=>
-// {
-// 	otp.remove({email: email})
-// 	.exec((err,data)=>{
-// 		if(err)
-// 			cb(err);
-// 		cb(null,data);
-// 	})
-// }
+exports.remove = (email,cb)=>
+{
+	otp.remove({email: email})
+	.exec((err,data)=>{
+		if(err)
+			cb(err);
+		cb(null,data);
+	})
+}
