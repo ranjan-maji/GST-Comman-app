@@ -10,7 +10,7 @@ const orderRoute = require('./routes/order');
 const stripeRoute = require('./routes/stripe');
 const otpRoute = require('./routes/sendOtp');
 const otpMRoute = require('./routes/sendmOtp');
-
+const userinfoRoute = require('./routes/userinfo');
 
 dotenv.config();
 
@@ -21,6 +21,9 @@ mongoose.connect(process.env.MONGO_URL)
 });
 app.use(express.json());
 
+
+
+
 app.use('/api/users', userRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/products', productRoute);
@@ -29,7 +32,7 @@ app.use('/api/orders', orderRoute);
 app.use('/api/checkout', stripeRoute);
 app.use('/api/mail', otpRoute);
 app.use('/api/mob', otpMRoute);
-
+app.use('/api/userinfo', userinfoRoute);
 app.listen(process.env.PORT || 8000, () => {
     console.log("Server Is Running");
 });

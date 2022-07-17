@@ -1,4 +1,5 @@
  const jwt = require('jsonwebtoken');
+ const Userinfo = require('../models/Userinfo');
 
  const verifyToken = (req, res, next) => {
     const authHeader = req.headers.token;
@@ -36,9 +37,12 @@
     });  
  };
 
+ 
+
  module.exports = { 
     verifyToken, 
     verifyTokenAndAuthorization, 
     verifyTokenAndAdmin, 
+    
 };
 
