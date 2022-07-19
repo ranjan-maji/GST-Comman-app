@@ -29,29 +29,44 @@ router.put('/:id', async (req, res) => {
     
     }
 });
+//img Upload
+router.post('/doc', upload.single('img'), async (req, res) => {
+    const result = await cloudinary.uploader.upload(req.file.path,); //{ folder: 'test'}
+    res.send(result)
+})
 
-
-
-
+router.post('/doc/:id', async (req, res) =>{
+    
+  
+      const delt = await cloudinary.uploader.destroy(img.public_id)//delete cloude_id
+        
+        res.send(delt)
+    
+})
+  
 
 //img Upload
 
-router.post('/upload', upload.single('image'), async (req, res) => {
-    try {
-        const result = await cloudinary.uploader.upload(req.file.path);
-        // Create instance of User
-        let user = new Userinfo({
-            gstdoc: req.body.gstdoc,
-            avater: result.secure_url,
-            cloudinary_id: result.public_id,
-        })
-        await user.save();
 
-        res.json(user);
-    } catch (err) {
-        console.log(err)
-    }
-})
+
+
+
+// router.post('/upload', upload.single('image'), async (req, res) => {
+//     try {
+//         const result = await cloudinary.uploader.upload(req.file.path);
+//         // Create instance of User
+//         let user = new Userinfo({
+//             gstdoc: req.body.gstdoc,
+//             avater: result.secure_url,
+//             cloudinary_id: result.public_id,
+//         })
+//         await user.save();
+
+//         res.json(user);
+//     } catch (err) {
+//         console.log(err)
+//     }
+// })
 
 router.get('/upload/:id', async (req, res) => {
     try {
