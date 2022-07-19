@@ -35,15 +35,23 @@ router.post('/doc', upload.single('img'), async (req, res) => {
     res.send(result)
 })
 
-router.post('/doc/:id', async (req, res) =>{
-    
-  
-      const delt = await cloudinary.uploader.destroy(img.public_id)//delete cloude_id
-        
-        res.send(delt)
-    
+
+router.delete('/del', async (req, res) => {
+   try {
+        const { public_id } = req.body;
+        if(!public_id) return res.status(400).json({msg : ' No Image Selectd'})
+
+         cloudinary.uploader.destroy(public_id, async(err, result) => {
+            if(err) throw err;
+
+            res.json({msg: "Deleted Image"})
+        })
+
+
+   } catch (err) {
+        return res.status(500).json({mes: err.message})
+   }
 })
-  
 
 //img Upload
 
