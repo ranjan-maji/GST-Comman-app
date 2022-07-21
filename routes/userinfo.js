@@ -2,7 +2,7 @@ const Userinfo = require('../models/Userinfo');
 const router = require('express').Router();
 const upload = require('../controllers/multer');
 const cloudinary = require('../controllers/cloudnary');
-const path = require('path');
+
 
 
 //Create User Info

@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 
+//const { roles } = require('../controllers/defineUser');
+
 const UserSchema = new mongoose.Schema(
     {
     username: { type: String, required: true, unique: true},
@@ -7,11 +9,15 @@ const UserSchema = new mongoose.Schema(
     password: { type: String, required: true },
     ph: { type: Number},
     dob: { type: String},
-    code: {type: String},
-    isAdmin: {
-        type: Boolean,
-        default: false,
-             },
+    role: {
+        type: String,
+        enum: ['superadmin', 'admin', 'client'],
+        default: 'client'
+    }
+    // isAdmin: {
+    //     type: Boolean,
+    //     default: false,
+    //          },
    },
     { timestamps: true }
 );

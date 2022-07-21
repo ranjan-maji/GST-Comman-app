@@ -1,36 +1,36 @@
 const router = require('express').Router();
-const fast2sms = require('fast-two-sms');
+//const fast2sms = require('fast-two-sms');
 
 
 
 
 
 
-router.post('/sendmessage', (req, res) => {
-    console.log(req.body.message)
-    console.log(req.body.number)
+// router.post('/sendmessage', (req, res) => {
+//     console.log(req.body.message)
+//     console.log(req.body.number)
  
-    sendMessage(req.body.message,req.body.number,res)
-})
+//     sendMessage(req.body.message,req.body.number,res)
+// })
  
-function sendMessage(message,number,res) {
-    var options = {
-      authorization: process.env.API_KEY,
-      message:message,
-      numbers: [number],
-    };
+// function sendMessage(message,number,res) {
+//     var options = {
+//       authorization: process.env.API_KEY,
+//       message:message,
+//       numbers: [number],
+//     };
  
-    // send this message
+//     // send this message
  
-    fast2sms
-      .sendMessage(options)
-      .then((response) => {
-        res.send("SMS OTP Code Sent Successfully")
-      })
-      .catch((error) => {
-        res.send("Some error taken place")
-      });
-}
+//     fast2sms
+//       .sendMessage(options)
+//       .then((response) => {
+//         res.send("SMS OTP Code Sent Successfully")
+//       })
+//       .catch((error) => {
+//         res.send("Some error taken place")
+//       });
+// }
 
 // router.post('/send', async (req, res) => {
 //    const response = await fast2sms.sendMessage({ 
